@@ -1,0 +1,40 @@
+html {
+  font-size: 62.5%; // 10px
+}
+
+body {
+  font-family: var(--font-family-regular), sans-serif;
+  font-size: var(--font-size-regular);
+  line-height: var(--line-height-regular);
+  color: var(--color-black);
+  letter-spacing: var(--letter-spacing-default);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+}
+
+button,
+a {
+  user-select: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.8rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 1rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-black);
+  border-radius: 1rem;
+  transition: var(--transition-default);
+
+  &:hover {
+    background: var(--color-gray-light);
+  }
+}

@@ -1,0 +1,17 @@
+@import './src/styles/abstracts/_mixins.scss';
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+@include mq(tab) {
+  .field {
+    display: grid;
+    grid-template-columns: 1fr 10rem;
+  }
+}
