@@ -1,0 +1,25 @@
+.comp {
+  &__item {
+    background-color: var(--color-white);
+    padding: 4rem 3rem;
+    @include centerContent;
+    flex-direction: column;
+  }
+  &__title {
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 2rem;
+    font-size: 2.4rem;
+  }
+  &__content {
+    @include centerContent;
+    width: 100%;
+  }
+}
+
+@include mq(tab) {
+  .comp {
+    &__content {
+      max-width: 40rem;
+    }
+  }
+}

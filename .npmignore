@@ -2,3 +2,17 @@
 /src
 tsconfig.json
 .storybook
+storybook-static
+
+.gitignore
+.babelrc.json
+declaration.d.ts
+tsconfig.json
+rollup.config.json
+
+/dist/data
+/dist/hooks
+/dist/lib
+/dist/stories
+/dist/utils
+/dist/components/base

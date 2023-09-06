@@ -60,3 +60,4 @@ vscode
 *.swp
 /node_modules
 /dist
+/storybook-static

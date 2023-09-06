@@ -25,9 +25,10 @@ export default [
         output: true,
         failOnError: true,
         outputStyle: 'compressed',
+        fileName: 'bundle.css',
       }),
       babel({
-        exclude: 'node_modules/**',
+        exclude: ['node_modules/**'],
         presets: ['@babel/preset-react'],
         babelHelpers: 'bundled',
       }),
@@ -40,5 +41,6 @@ export default [
         requireReturnsDefault: 'namespace',
       }),
     ],
+    external: ['react', 'react-dom'],
   },
 ];

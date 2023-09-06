@@ -1,3 +1,18 @@
+@import './base/reset';
+@import './abstracts/variables';
+@import './base/base';
+@import './abstracts/mixins';
+@import './colors/pallete';
+@import './components/base/button';
+@import './components/base/comp_container';
+@import './components/base/error_msg';
+@import './components/base/field';
+@import './components/base/input';
+@import './components/base/suggestions';
+@import './components/base/items_in_store';
+@import './components/simple_filter';
+@import './components/store_selected_items';
+
 /* base styling for our button */
 .btn {
   padding: 0.6rem 1rem;

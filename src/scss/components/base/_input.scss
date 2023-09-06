@@ -1,0 +1,26 @@
+.input {
+  border: 2px solid var(--color-gray-light2);
+  border-radius: var(--border-radius);
+  padding: 0.6rem 1rem;
+  background-color: var(--color-white);
+  width: 100%;
+  box-shadow: 0 0 0.4rem transparent;
+  transition: var(--transition-default);
+
+  &::placeholder {
+    opacity: 0.5;
+    color: var(--color-gray);
+  }
+
+  &:focus {
+    outline: none;
+    border: 2px solid rgba(var(--color-primary-rgb), 0.4);
+    box-shadow: 0 0 0.4rem rgba(var(--color-primary-rgb), 0.4);
+  }
+}
+
+@include mq(tab) {
+  .input {
+    min-width: 20rem;
+  }
+}
