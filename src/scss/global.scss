@@ -1,0 +1,30 @@
+/* base styling for our button */
+.btn {
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: 1px solid #1e1e1e;
+  cursor: pointer;
+}
+
+/* styling for our variants */
+.btn-primary {
+  border: none;
+  background-color: blue;
+  color: white;
+  &:hover {
+    background-color: blue;
+  }
+}
+.btn-danger {
+  border: none;
+  background-color: red;
+  color: white;
+  &:hover {
+    background-color: red;
+  }
+}
+
+/* styling for different shape*/
+.btn-rounded {
+  border-radius: 0.4rem;
+}
