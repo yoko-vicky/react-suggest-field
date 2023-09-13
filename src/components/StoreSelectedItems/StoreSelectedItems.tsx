@@ -80,7 +80,7 @@ export const StoreSelectedItems = ({
   };
 
   const handleSuggestItemClick = (item: ItemType) => {
-    console.log({ item });
+    // console.log({ item });
     if (maxItemLength && itemsToStore.length === maxItemLength) {
       setError(
         `Unable to add a new item as it reached ${maxItemLength} items.`,
@@ -93,6 +93,7 @@ export const StoreSelectedItems = ({
     setItemsToStore((prev) => [...prev, item]);
     setShowSuggest(false);
     setSuggestions((prev) => prev.filter((sug) => sug.id !== item.id));
+    setUserInput('');
   };
 
   const handleRemoveItem = (item: ItemType) => {

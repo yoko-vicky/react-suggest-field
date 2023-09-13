@@ -6,6 +6,7 @@
   cursor: pointer;
   transition: var(--transition-default);
   width: 100%;
+  user-select: none;
   @include centerContent;
 
   &:hover {
