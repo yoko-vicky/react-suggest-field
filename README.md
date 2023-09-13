@@ -1,5 +1,7 @@
 # React Suggest Field
 
+![image](./image.gif)
+
 ## Getting Started
 
 1. Run `npm install react-suggest-field`

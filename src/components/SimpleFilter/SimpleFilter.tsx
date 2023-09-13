@@ -47,7 +47,7 @@ export const SimpleFilter = ({
   };
 
   const handleSuggestItemClick = (item: ItemType) => {
-    console.log({ item });
+    // console.log({ item });
 
     setSelectedItem(item);
     setShowSuggest(false);
