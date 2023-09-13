@@ -2,6 +2,10 @@
 
 ![image](./image.gif)
 
+## Storybook
+
+[Storybook](https://yocosaka-react-suggest-field.netlify.app/)
+
 ## Getting Started
 
 1. Run `npm install react-suggest-field`
