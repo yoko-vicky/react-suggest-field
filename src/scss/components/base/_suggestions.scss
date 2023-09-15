@@ -13,6 +13,16 @@
   box-shadow: var(--box-shadow-primary);
   z-index: 9999;
 
+  &__inputs {
+    visibility: hidden;
+    height: 1px;
+  }
+
+  &__labels {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__item {
     user-select: none;
     cursor: pointer;
@@ -20,7 +30,8 @@
     padding: 0.4rem;
     border-radius: 4px;
 
-    &:hover {
+    &:hover,
+    &.focus {
       background-color: var(--color-gray-light2);
     }
   }

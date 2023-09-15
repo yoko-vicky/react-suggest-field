@@ -1,7 +1,7 @@
 {
   "name": "react-suggest-field",
   "author": "Yoko Saka <sakayoco55@gmail.com> (https://github.com/yocosaka)",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "This package provides react suggest field.",
   "repository": {
     "type": "git",
@@ -35,7 +35,6 @@
     "@storybook/addon-essentials": "^7.4.0",
     "@storybook/addon-interactions": "^7.4.0",
     "@storybook/addon-links": "^7.4.0",
-    "@storybook/addon-onboarding": "^1.0.8",
     "@storybook/blocks": "^7.4.0",
     "@storybook/react": "^7.4.0",
     "@storybook/react-webpack5": "^7.4.0",

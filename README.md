@@ -69,16 +69,18 @@ const initialItemsInStore = [
 
 export const App = () => {
   return (
-          <StoreSelectedItems
-            initialItemsInStore={initialItemsInStore}
-            originSuggestions={originSuggestions}
-            maxItemLength={5}
-            placeholder="Input something to add"
-          />
-          <SimpleFilter
-            originSuggestions={originSuggestions}
-            placeholder="Input something to filter"
-          />
+          <div className={styles.app}>
+            <StoreSelectedItems
+              initialItemsInStore={initialItemsInStore}
+              originSuggestions={originSuggestions}
+              maxItemLength={5}
+              placeholder="Input something to add"
+            />
+            <SimpleFilter
+              originSuggestions={originSuggestions}
+              placeholder="Input something to filter"
+            />
+          </div>
   );
 };
 

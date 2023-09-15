@@ -1,4 +1,5 @@
+export type IdType = string | number | null | undefined;
 export interface ItemType {
-  id: string | number | null;
+  id: IdType;
   label: string;
 }

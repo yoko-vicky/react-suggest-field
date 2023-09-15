@@ -6,7 +6,7 @@ import { Field } from '../../components/base/Field';
 import { InputField } from '../../components/base/InputField';
 import { Suggestions } from '../../components/base/Suggestions';
 import useCloseOutsideClick from '../../hooks/useCloseOutsideClick';
-import { ItemType } from '../../types';
+import { IdType, ItemType } from '../../types';
 import { formatStrToFilter } from '../../utils/index';
 import { formatStr } from '../../utils/index';
 
@@ -28,6 +28,9 @@ export const SimpleFilter = ({
   const [showSuggest, setShowSuggest] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
   const [suggestions, setSuggestions] = useState<ItemType[]>([]);
+  const [onFocusItemIndex, setOnFocusItemIndex] = useState<number | null>(null);
+  const [clickedEnter, setClickedEnter] = useState<boolean>(false);
+
   const { containerRef, inputRef } = useCloseOutsideClick(() =>
     setShowSuggest(false),
   );
@@ -46,15 +49,17 @@ export const SimpleFilter = ({
     setUserInput(e.target.value);
   };
 
-  const handleSuggestItemClick = (item: ItemType) => {
+  const handleSuggestItemClick = (itemId: IdType) => {
     // console.log({ item });
-
-    setSelectedItem(item);
-    setShowSuggest(false);
-    //  console.log('Do Something', item.label);
-    setUserInput(item.label);
-
-    setSuggestions(originSuggestions.filter((sug) => sug.id !== item.id));
+    // TODO: update method with itemId
+    const item = filteredSuggestions.find((sug) => `${sug.id}` === `${itemId}`);
+    if (item) {
+      setSelectedItem(item);
+      setShowSuggest(false);
+      //  console.log('Do Something', item.label);
+      setUserInput(item.label);
+      setSuggestions(originSuggestions.filter((sug) => sug.id !== item.id));
+    }
   };
 
   const handleSearchBtnClick = () => {
@@ -78,12 +83,67 @@ export const SimpleFilter = ({
     setShowSuggest((prev) => !prev);
   };
 
+  const handleCursorSelect = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowDown') {
+      inputRef.current?.blur();
+      setOnFocusItemIndex((prev) =>
+        prev === null
+          ? 0
+          : prev === 0
+          ? prev + 1
+          : prev + 1 === filteredSuggestions.length
+          ? 0
+          : prev + 1,
+      );
+    }
+
+    if (e.key === 'ArrowUp') {
+      inputRef.current?.blur();
+      setOnFocusItemIndex((prev) =>
+        prev === null || prev === 0 ? filteredSuggestions.length : prev - 1,
+      );
+    }
+
+    if (e.key === 'Enter') {
+      inputRef.current?.blur();
+      console.log('Clicked Enter', onFocusItemIndex);
+      setClickedEnter(true);
+    }
+  };
+
+  const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
+    const targetItem = filteredSuggestions[targetItemIndex];
+    if (targetItem) {
+      setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
+      setUserInput('');
+      setSelectedItem(targetItem);
+      setUserInput(targetItem.label);
+    }
+    setShowSuggest(false);
+    setOnFocusItemIndex(null);
+  };
+
+  useEffect(() => {
+    if (!showSuggest) return;
+
+    document.addEventListener('keydown', handleCursorSelect);
+    return () => document.removeEventListener('keydown', handleCursorSelect);
+  }, [showSuggest]);
+
+  useEffect(() => {
+    if (!clickedEnter || !showSuggest || onFocusItemIndex == null) return;
+    handleSuggestItemClickByFocus(onFocusItemIndex);
+    setClickedEnter(false);
+  }, [clickedEnter, showSuggest, onFocusItemIndex]);
+
   useEffect(() => {
     // initial setup suggestions
     if (!originSuggestions) return;
     setSuggestions(originSuggestions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log({ onFocusItemIndex, clickedEnter: clickedEnter });
 
   return (
     <div
@@ -102,6 +162,7 @@ export const SimpleFilter = ({
           <Suggestions
             filteredSuggestions={filteredSuggestions}
             handleSuggestItemClick={handleSuggestItemClick}
+            onFocusItemIndex={onFocusItemIndex}
           />
         )}
         <Button label={btnLabel} onClick={handleSearchBtnClick} />

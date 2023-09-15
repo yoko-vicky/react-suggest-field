@@ -1,6 +1,7 @@
 import { GrFormClose } from 'react-icons/gr';
 import { ItemType } from '../../../types';
 import React from 'react';
+import uuid from '../../../lib/uuid';
 
 interface ItemsInStorePropsType {
   items: ItemType[];
@@ -15,7 +16,7 @@ export const ItemsInStore = ({
     <div className={'itemsInStore'}>
       {items.map((item) => (
         <div
-          key={item.id}
+          key={item.id || uuid()}
           onClick={() => handleRemoveItem(item)}
           className={'itemsInStore__item'}
         >
