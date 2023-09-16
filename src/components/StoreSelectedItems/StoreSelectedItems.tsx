@@ -245,6 +245,7 @@ export const StoreSelectedItems = ({
     <div
       className={clsx('storeSelectedItems', className ? className : '')}
       ref={containerRef}
+      data-testid="storeSelectedItems"
     >
       <Field>
         <InputField

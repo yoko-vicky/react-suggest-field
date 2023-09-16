@@ -6,7 +6,7 @@ import {
 } from '../components/SimpleFilter';
 import { originSuggestions } from '../data/examples';
 
-describe('Test Component', () => {
+describe('Simple Filter', () => {
   let props: SimpleFilterPropsType;
 
   beforeEach(() => {
