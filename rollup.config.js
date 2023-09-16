@@ -1,5 +1,5 @@
 import { babel } from '@rollup/plugin-babel';
-import external from 'rollup-plugin-peer-deps-external';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import scss from 'rollup-plugin-scss';
 import typescript from '@rollup/plugin-typescript';
@@ -21,6 +21,7 @@ export default [
       },
     ],
     plugins: [
+      peerDepsExternal(),
       scss({
         output: true,
         failOnError: true,
@@ -32,7 +33,6 @@ export default [
         presets: ['@babel/preset-react'],
         babelHelpers: 'bundled',
       }),
-      external(),
       resolve(),
       typescript(),
       terser(),
@@ -41,6 +41,5 @@ export default [
         requireReturnsDefault: 'namespace',
       }),
     ],
-    external: ['react', 'react-dom'],
   },
 ];
