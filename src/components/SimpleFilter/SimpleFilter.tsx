@@ -149,6 +149,7 @@ export const SimpleFilter = ({
     <div
       className={clsx('simpleFilter', className ? className : '')}
       ref={containerRef}
+      data-testid="simpleFilter"
     >
       <Field>
         <InputField
