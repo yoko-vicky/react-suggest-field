@@ -20,6 +20,7 @@ import {
   formatLabelToStore,
   DEFAULT_INPUT_REGEX,
 } from '../../utils/index';
+import useCursorSelect from '../../hooks/useCursorSelect';
 
 export interface StoreSelectedItemsPropsType {
   initialItemsInStore: ItemType[];
@@ -47,11 +48,9 @@ export const StoreSelectedItems = ({
     initialItemsInStore || [],
   );
   const [suggestions, setSuggestions] = useState<ItemType[]>([]);
-  const [onFocusItemIndex, setOnFocusItemIndex] = useState<number | null>(null);
   const { containerRef, inputRef } = useCloseOutsideClick(() =>
     setShowSuggest(false),
   );
-  const [clickedEnter, setClickedEnter] = useState<boolean>(false);
 
   const filteredSuggestions = useMemo(() => {
     const itemsToStoreIds = itemsToStore
@@ -69,6 +68,32 @@ export const StoreSelectedItems = ({
         : filteredSuggestions,
     [filteredSuggestions, userInput],
   );
+
+  const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
+    if (maxItemLength && itemsToStore.length === maxItemLength) {
+      setError(
+        `Unable to add a new item as it reached ${maxItemLength} items.`,
+      );
+      setShowSuggest(false);
+      setUserInput('');
+      return;
+    }
+
+    const targetItem = filteredSuggestions[targetItemIndex];
+    if (targetItem) {
+      setItemsToStore((prev) => [...prev, targetItem]);
+      setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
+      setUserInput('');
+    }
+    setShowSuggest(false);
+  };
+
+  const { onFocusItemIndex } = useCursorSelect({
+    inputRef,
+    filteredSuggestions,
+    showSuggest,
+    handleSuggestItemClickByFocus,
+  });
 
   const handleUserInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setError('');
@@ -169,77 +194,12 @@ export const StoreSelectedItems = ({
     setShowSuggest(true);
   };
 
-  const handleCursorSelect = (e: KeyboardEvent) => {
-    // console.log({ e: e.key, onFocusItemIndex });
-
-    if (e.key === 'ArrowDown') {
-      inputRef.current?.blur();
-      setOnFocusItemIndex((prev) =>
-        prev === null
-          ? 0
-          : prev === 0
-          ? prev + 1
-          : prev + 1 === filteredSuggestions.length
-          ? 0
-          : prev + 1,
-      );
-    }
-
-    if (e.key === 'ArrowUp') {
-      inputRef.current?.blur();
-      setOnFocusItemIndex((prev) =>
-        prev === null || prev === 0 ? filteredSuggestions.length : prev - 1,
-      );
-    }
-
-    if (e.key === 'Enter') {
-      inputRef.current?.blur();
-      console.log('Clicked Enter', onFocusItemIndex);
-      setClickedEnter(true);
-    }
-  };
-
-  const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
-    if (maxItemLength && itemsToStore.length === maxItemLength) {
-      setError(
-        `Unable to add a new item as it reached ${maxItemLength} items.`,
-      );
-      setShowSuggest(false);
-      setUserInput('');
-      return;
-    }
-
-    const targetItem = filteredSuggestions[targetItemIndex];
-    if (targetItem) {
-      setItemsToStore((prev) => [...prev, targetItem]);
-      setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
-      setUserInput('');
-    }
-    setShowSuggest(false);
-    setOnFocusItemIndex(null);
-  };
-
   useEffect(() => {
     // initial setup suggestions
     if (!originSuggestions) return;
     setSuggestions(originSuggestions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (!showSuggest) return;
-
-    document.addEventListener('keydown', handleCursorSelect);
-    return () => document.removeEventListener('keydown', handleCursorSelect);
-  }, [showSuggest]);
-
-  useEffect(() => {
-    if (!clickedEnter || !showSuggest || onFocusItemIndex == null) return;
-    handleSuggestItemClickByFocus(onFocusItemIndex);
-    setClickedEnter(false);
-  }, [clickedEnter, showSuggest, onFocusItemIndex]);
-
-  console.log({ onFocusItemIndex, clickedEnter: clickedEnter });
 
   return (
     <div

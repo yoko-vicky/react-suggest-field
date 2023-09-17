@@ -9,6 +9,7 @@ import useCloseOutsideClick from '../../hooks/useCloseOutsideClick';
 import { IdType, ItemType } from '../../types';
 import { formatStrToFilter } from '../../utils/index';
 import { formatStr } from '../../utils/index';
+import useCursorSelect from '../../hooks/useCursorSelect';
 
 export interface SimpleFilterPropsType {
   originSuggestions: ItemType[];
@@ -28,8 +29,6 @@ export const SimpleFilter = ({
   const [showSuggest, setShowSuggest] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
   const [suggestions, setSuggestions] = useState<ItemType[]>([]);
-  const [onFocusItemIndex, setOnFocusItemIndex] = useState<number | null>(null);
-  const [clickedEnter, setClickedEnter] = useState<boolean>(false);
 
   const { containerRef, inputRef } = useCloseOutsideClick(() =>
     setShowSuggest(false),
@@ -43,6 +42,24 @@ export const SimpleFilter = ({
         : suggestions,
     [suggestions, userInput],
   );
+
+  const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
+    const targetItem = filteredSuggestions[targetItemIndex];
+    if (targetItem) {
+      setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
+      setUserInput('');
+      setSelectedItem(targetItem);
+      setUserInput(targetItem.label);
+    }
+    setShowSuggest(false);
+  };
+
+  const { onFocusItemIndex } = useCursorSelect({
+    inputRef,
+    filteredSuggestions,
+    showSuggest,
+    handleSuggestItemClickByFocus,
+  });
 
   const handleUserInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setError('');
@@ -83,67 +100,12 @@ export const SimpleFilter = ({
     setShowSuggest((prev) => !prev);
   };
 
-  const handleCursorSelect = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowDown') {
-      inputRef.current?.blur();
-      setOnFocusItemIndex((prev) =>
-        prev === null
-          ? 0
-          : prev === 0
-          ? prev + 1
-          : prev + 1 === filteredSuggestions.length
-          ? 0
-          : prev + 1,
-      );
-    }
-
-    if (e.key === 'ArrowUp') {
-      inputRef.current?.blur();
-      setOnFocusItemIndex((prev) =>
-        prev === null || prev === 0 ? filteredSuggestions.length : prev - 1,
-      );
-    }
-
-    if (e.key === 'Enter') {
-      inputRef.current?.blur();
-      console.log('Clicked Enter', onFocusItemIndex);
-      setClickedEnter(true);
-    }
-  };
-
-  const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
-    const targetItem = filteredSuggestions[targetItemIndex];
-    if (targetItem) {
-      setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
-      setUserInput('');
-      setSelectedItem(targetItem);
-      setUserInput(targetItem.label);
-    }
-    setShowSuggest(false);
-    setOnFocusItemIndex(null);
-  };
-
-  useEffect(() => {
-    if (!showSuggest) return;
-
-    document.addEventListener('keydown', handleCursorSelect);
-    return () => document.removeEventListener('keydown', handleCursorSelect);
-  }, [showSuggest]);
-
-  useEffect(() => {
-    if (!clickedEnter || !showSuggest || onFocusItemIndex == null) return;
-    handleSuggestItemClickByFocus(onFocusItemIndex);
-    setClickedEnter(false);
-  }, [clickedEnter, showSuggest, onFocusItemIndex]);
-
   useEffect(() => {
     // initial setup suggestions
     if (!originSuggestions) return;
     setSuggestions(originSuggestions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log({ onFocusItemIndex, clickedEnter: clickedEnter });
 
   return (
     <div
