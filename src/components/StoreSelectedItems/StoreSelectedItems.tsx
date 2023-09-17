@@ -7,7 +7,7 @@ import { InputField } from '../../components/base/InputField';
 import { ItemsInStore } from '../../components/base/ItemsInStore';
 import { Suggestions } from '../../components/base/Suggestions';
 import useCloseOutsideClick from '../../hooks/useCloseOutsideClick';
-import { IdType, ItemType } from '../../types';
+import { ErrorMessagesType, IdType, ItemType } from '../../types';
 import { formatStrToFilter } from '../../utils/index';
 import {
   formatStr,
@@ -25,11 +25,17 @@ export interface StoreSelectedItemsPropsType {
   className?: string;
   maxItemLength?: number;
   placeholder?: string;
-  error: string;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  errorMessage?: string;
+  error?: string;
+  setError?: React.Dispatch<React.SetStateAction<string>>;
+  errorMessages?: ErrorMessagesType;
   showErrorMessage?: boolean;
 }
+
+const defaultErrorMessages = {
+  maximumReached: 'Unable to add a new item as it reached 3 items.',
+  alreadyAdded: 'This item is already added.',
+  unavailableCharacters: 'Sorry... Only letters, numbers are available.',
+};
 
 export const StoreSelectedItems = ({
   items = [],
@@ -42,7 +48,7 @@ export const StoreSelectedItems = ({
   placeholder,
   error,
   setError,
-  errorMessage = '',
+  errorMessages = defaultErrorMessages,
   showErrorMessage = true,
 }: StoreSelectedItemsPropsType) => {
   const [userInput, setUserInput] = useState<string>('');
@@ -71,7 +77,10 @@ export const StoreSelectedItems = ({
 
   const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
     if (maxItemLength && items.length === maxItemLength) {
-      setError(errorMessage);
+      error &&
+        setError &&
+        errorMessages?.maximumReached &&
+        setError(errorMessages?.maximumReached);
       setShowSuggest(false);
       setUserInput('');
       return;
@@ -94,7 +103,7 @@ export const StoreSelectedItems = ({
   });
 
   const handleUserInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setError('');
+    error && setError && setError('');
     const newValue = e.target.value;
     const regex = inputRegexStr
       ? new RegExp(inputRegexStr)
@@ -104,8 +113,13 @@ export const StoreSelectedItems = ({
       .split('')
       .every((letter) => !!letter.match(regex));
 
-    if (!isValidString) {
-      setError('Sorry... Only letters, numbers are available.');
+    if (
+      !isValidString &&
+      error &&
+      setError &&
+      errorMessages?.unavailableCharacters
+    ) {
+      setError(errorMessages?.unavailableCharacters);
       return;
     }
     setUserInput(e.target.value);
@@ -113,7 +127,10 @@ export const StoreSelectedItems = ({
 
   const handleSuggestItemClick = (selectedItemId: IdType) => {
     if (maxItemLength && items.length === maxItemLength) {
-      setError(errorMessage);
+      error &&
+        setError &&
+        errorMessages?.maximumReached &&
+        setError(errorMessages.maximumReached);
       setShowSuggest(false);
       setUserInput('');
       return;
@@ -134,7 +151,7 @@ export const StoreSelectedItems = ({
     setItems((prev: ItemType[]) =>
       prev.filter((im) => im.label !== item.label),
     );
-    setError('');
+    error && setError && setError('');
 
     if (item.id && !suggestions.find((sug) => sug.id === item.id)) {
       setSuggestions((prev) => [...prev, item]);
@@ -145,7 +162,10 @@ export const StoreSelectedItems = ({
 
   const handleAddBtnClick = () => {
     if (maxItemLength && items.length === maxItemLength) {
-      setError(errorMessage);
+      error &&
+        setError &&
+        errorMessages?.maximumReached &&
+        setError(errorMessages.maximumReached);
       setUserInput('');
       setShowSuggest(false);
       return;
@@ -161,7 +181,10 @@ export const StoreSelectedItems = ({
     );
 
     if (itemInStore) {
-      setError(`'${userInput}' is already added.`);
+      error &&
+        setError &&
+        errorMessages?.alreadyAdded &&
+        setError(errorMessages.alreadyAdded);
       setUserInput('');
       return;
     }
@@ -186,7 +209,7 @@ export const StoreSelectedItems = ({
   };
 
   const handleOnFocusInput = () => {
-    setError('');
+    error && setError && setError('');
     setShowSuggest(true);
   };
 

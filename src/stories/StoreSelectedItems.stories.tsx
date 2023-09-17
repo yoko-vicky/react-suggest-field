@@ -35,6 +35,5 @@ const args = {
   originSuggestions: originSuggestions,
   maxItemLength: 3,
   placeholder: 'Input something to add',
-  errorMessage: 'Unable to add a new item as it reached 3 items.',
 };
 Default.args = args;

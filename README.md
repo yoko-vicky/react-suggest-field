@@ -11,6 +11,8 @@ You can try it out on this [live storybook demo](https://yocosaka-react-suggest-
 
 - TypeScript
 - React
+- SCSS
+- Rollup
 
 ## Live Demo
 
@@ -23,14 +25,42 @@ $ npm install react-suggest-field
 $ yarn add react-suggest-field
 ```
 
-<!-- ## Props -->
+## Types & Props
 
-<!--
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 | -->
+### Types
+
+| Type  | Detail           |
+| ----------------- | ---------------------------------------------------------------------------- |
+| ItemType          | { id: IdType, label: string }|
+| IdType| string / number / null / undefined       |
+| ErrorMessagesType | { maximumReached:string, alreadyAdded:string, unavailableCharacters:string } |
+
+### Props in SimpleFilter
+
+| Props | Optional | Types    | Default Value |
+| ----------------- | -------- | -------------------------------- | ------------- |
+| originSuggestions | required | ItemType[]           | []|
+| onClick           | required | (selectedItem: ItemType) => void | - |
+| btnLabel          | optional | string   | 'Search'      |
+| placeholder       | optional | string   | - |
+| className         | optional | string   | - |
+
+### Props in StoreSelectedItems
+
+| Props | Optional | Types        | Default Value  |
+| ----------------- | -------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| items | required | state: ItemType[]        | -  |
+| setItems          | required | React.Dispatch<React.SetStateAction<ItemType[]>> | -  |
+| originSuggestions | required | ItemType[]   | -  |
+| inputRegexStr?    | optional | string       | /[A-Za-z0-9\s]/|
+| btnLabel          | optional | string       | 'Add'          |
+| className         | optional | string       | -  |
+| maxItemLength     | optional | number       | -  |
+| placeholder       | optional | string       | -  |
+| error | required | state: string| -  |
+| setError          | required | React.Dispatch<React.SetStateAction<string>>     | -  |
+| showErrorMessage  | optional | boolean      | true |
+| errorMessages     | optional | ErrorMessagesType        | maximumReached: 'Unable to add a new item as it reached 3 items.', alreadyAdded: 'This item is already added.', unavailableCharacters: 'Sorry... Only letters, numbers are available.' |
 
 ## The gist
 
