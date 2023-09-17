@@ -1,16 +1,18 @@
 import React, { ReactNode } from 'react';
 
+export interface CompContainerPropsType {
+  children: ReactNode;
+  title?: string;
+}
+
 export const CompContainer = ({
   children,
-  title,
-}: {
-  children: ReactNode;
-  title: string;
-}) => {
+  title = '',
+}: CompContainerPropsType) => {
   return (
     <div className="comp">
       <div className="comp__item">
-        <h2 className="comp__title">{title}</h2>
+        {title && <h2 className="comp__title">{title}</h2>}
         <div className="comp__content">{children}</div>
       </div>
     </div>
