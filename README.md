@@ -24,7 +24,6 @@ You can try it out on this [live storybook demo](https://yocosaka-react-suggest-
 $ npm install react-suggest-field
 $ yarn add react-suggest-field
 ```
-
 ## Types & Props
 
 ### Types
@@ -76,7 +75,6 @@ import React from 'react';
 import { SimpleFilter, StoreSelectedItems, ItemType, CompContainer, ErrorMessagesType } from 'react-suggest-field';
 import 'react-suggest-field/dist/bundle.css';
 
-function App() {
   const originSuggestions = [
   {
     id: 1,
@@ -117,8 +115,10 @@ const myErrorMessages: ErrorMessagesType = {
   unavailableCharacters: 'Sorry... Only letters, numbers are available.',
 };
 
-const [items, setItems] = useState<Itemtype[]>(initialItems)
-const [error, setError] = useState<string>('')
+function App() {
+
+  const [items, setItems] = useState<ItemType[]>(initialItems)
+  const [error, setError] = useState<string>('')
 
   return (
     <>
@@ -144,12 +144,13 @@ const [error, setError] = useState<string>('')
           onClick={(selectedItem) => alert(selectedItem)}
           btnLabel={'Search!'}
           className={'wonderful-class'}
-          placeholder={'Input something here!'}
         />
       </CompContainer>
     </>
   );
 }
+
+export default App;
 ```
 
 ## Author
