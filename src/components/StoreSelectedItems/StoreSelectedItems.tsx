@@ -17,7 +17,8 @@ import {
 import useCursorSelect from '../../hooks/useCursorSelect';
 
 export interface StoreSelectedItemsPropsType {
-  initialItemsInStore: ItemType[];
+  items: ItemType[];
+  setItems: any;
   originSuggestions: ItemType[];
   inputRegexStr?: string;
   btnLabel?: string;
@@ -27,7 +28,8 @@ export interface StoreSelectedItemsPropsType {
 }
 
 export const StoreSelectedItems = ({
-  initialItemsInStore = [],
+  items = [],
+  setItems,
   inputRegexStr,
   originSuggestions,
   btnLabel = 'Add',
@@ -38,20 +40,17 @@ export const StoreSelectedItems = ({
   const [userInput, setUserInput] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [showSuggest, setShowSuggest] = useState<boolean>(false);
-  const [itemsToStore, setItemsToStore] = useState<ItemType[]>(
-    initialItemsInStore || [],
-  );
   const [suggestions, setSuggestions] = useState<ItemType[]>([]);
   const { containerRef, inputRef } = useCloseOutsideClick(() =>
     setShowSuggest(false),
   );
 
   const filteredSuggestions = useMemo(() => {
-    const itemsToStoreIds = itemsToStore
+    const itemsToStoreIds = items
       .filter((item) => !!item.id)
       .map((item) => item.id);
     return suggestions.filter((sug) => !itemsToStoreIds.includes(sug.id));
-  }, [itemsToStore, suggestions]);
+  }, [items, suggestions]);
 
   const filteredSuggestionsToShow = useMemo(
     () =>
@@ -64,7 +63,7 @@ export const StoreSelectedItems = ({
   );
 
   const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
-    if (maxItemLength && itemsToStore.length === maxItemLength) {
+    if (maxItemLength && items.length === maxItemLength) {
       setError(
         `Unable to add a new item as it reached ${maxItemLength} items.`,
       );
@@ -75,7 +74,7 @@ export const StoreSelectedItems = ({
 
     const targetItem = filteredSuggestions[targetItemIndex];
     if (targetItem) {
-      setItemsToStore((prev) => [...prev, targetItem]);
+      setItems((prev: ItemType[]) => [...prev, targetItem]);
       setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
       setUserInput('');
     }
@@ -108,7 +107,7 @@ export const StoreSelectedItems = ({
   };
 
   const handleSuggestItemClick = (selectedItemId: IdType) => {
-    if (maxItemLength && itemsToStore.length === maxItemLength) {
+    if (maxItemLength && items.length === maxItemLength) {
       setError(
         `Unable to add a new item as it reached ${maxItemLength} items.`,
       );
@@ -121,7 +120,7 @@ export const StoreSelectedItems = ({
       (sug) => sug.id?.toString() === selectedItemId,
     );
     if (targetItem) {
-      setItemsToStore((prev) => [...prev, targetItem]);
+      setItems((prev:ItemType[]) => [...prev, targetItem]);
       setShowSuggest(false);
       setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
       setUserInput('');
@@ -129,7 +128,7 @@ export const StoreSelectedItems = ({
   };
 
   const handleRemoveItem = (item: ItemType) => {
-    setItemsToStore((prev) => prev.filter((im) => im.label !== item.label));
+    setItems((prev: ItemType[]) => prev.filter((im) => im.label !== item.label));
     setError('');
 
     if (item.id && !suggestions.find((sug) => sug.id === item.id)) {
@@ -140,7 +139,7 @@ export const StoreSelectedItems = ({
   };
 
   const handleAddBtnClick = () => {
-    if (maxItemLength && itemsToStore.length === maxItemLength) {
+    if (maxItemLength && items.length === maxItemLength) {
       setError(
         `Unable to add a new item as it reached ${maxItemLength} items.`,
       );
@@ -154,7 +153,7 @@ export const StoreSelectedItems = ({
       return;
     }
 
-    const itemInStore = itemsToStore.find(
+    const itemInStore = items.find(
       (item) => item.label.toLowerCase() === formattedUserInput,
     );
 
@@ -169,7 +168,7 @@ export const StoreSelectedItems = ({
     );
 
     if (itemInOriginData) {
-      setItemsToStore((prev) => [...prev, itemInOriginData]);
+      setItems((prev: ItemType[]) => [...prev, itemInOriginData]);
       setUserInput('');
       return;
     }
@@ -178,7 +177,7 @@ export const StoreSelectedItems = ({
       id: null,
       label: formatLabelToStore(userInput),
     };
-    setItemsToStore((prev) => [...prev, newItem]);
+    setItems((prev: ItemType[]) => [...prev, newItem]);
     setUserInput('');
     setShowSuggest(false);
   };
@@ -219,9 +218,9 @@ export const StoreSelectedItems = ({
         <Button label={btnLabel} onClick={handleAddBtnClick} />
       </Field>
       {error && <ErrorMsg error={error} />}
-      {itemsToStore && !!itemsToStore.length && (
+      {items && !!items.length && (
         <ItemsInStore
-          items={itemsToStore}
+          items={items}
           handleRemoveItem={handleRemoveItem}
         />
       )}
