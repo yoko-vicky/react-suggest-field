@@ -15,9 +15,17 @@ export default {
 
 const Template: StoryFn<StoreSelectedItemsPropsType> = (args) => {
   const [items, setItems] = useState<ItemType[]>(initialItemsInStore || []);
+  const [error, setError] = useState<string>('');
+
   return (
     <CompContainer title={'Store Selected Items'}>
-      <StoreSelectedItems {...args} items={items} setItems={setItems} />
+      <StoreSelectedItems
+        {...args}
+        items={items}
+        setItems={setItems}
+        error={error}
+        setError={setError}
+      />
     </CompContainer>
   );
 };
@@ -25,7 +33,8 @@ const Template: StoryFn<StoreSelectedItemsPropsType> = (args) => {
 export const Default = Template.bind({});
 const args = {
   originSuggestions: originSuggestions,
-  maxItemLength: 5,
+  maxItemLength: 3,
   placeholder: 'Input something to add',
+  errorMessage: 'Unable to add a new item as it reached 3 items.',
 };
 Default.args = args;

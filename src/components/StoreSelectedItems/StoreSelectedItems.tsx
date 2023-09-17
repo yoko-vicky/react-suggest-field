@@ -18,13 +18,17 @@ import useCursorSelect from '../../hooks/useCursorSelect';
 
 export interface StoreSelectedItemsPropsType {
   items: ItemType[];
-  setItems: any;
+  setItems: React.Dispatch<React.SetStateAction<ItemType[]>>;
   originSuggestions: ItemType[];
   inputRegexStr?: string;
   btnLabel?: string;
   className?: string;
   maxItemLength?: number;
   placeholder?: string;
+  error: string;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  errorMessage?: string;
+  showErrorMessage?: boolean;
 }
 
 export const StoreSelectedItems = ({
@@ -36,9 +40,12 @@ export const StoreSelectedItems = ({
   className,
   maxItemLength,
   placeholder,
+  error,
+  setError,
+  errorMessage = '',
+  showErrorMessage = true,
 }: StoreSelectedItemsPropsType) => {
   const [userInput, setUserInput] = useState<string>('');
-  const [error, setError] = useState<string>('');
   const [showSuggest, setShowSuggest] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<ItemType[]>([]);
   const { containerRef, inputRef } = useCloseOutsideClick(() =>
@@ -64,9 +71,7 @@ export const StoreSelectedItems = ({
 
   const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
     if (maxItemLength && items.length === maxItemLength) {
-      setError(
-        `Unable to add a new item as it reached ${maxItemLength} items.`,
-      );
+      setError(errorMessage);
       setShowSuggest(false);
       setUserInput('');
       return;
@@ -108,9 +113,7 @@ export const StoreSelectedItems = ({
 
   const handleSuggestItemClick = (selectedItemId: IdType) => {
     if (maxItemLength && items.length === maxItemLength) {
-      setError(
-        `Unable to add a new item as it reached ${maxItemLength} items.`,
-      );
+      setError(errorMessage);
       setShowSuggest(false);
       setUserInput('');
       return;
@@ -120,7 +123,7 @@ export const StoreSelectedItems = ({
       (sug) => sug.id?.toString() === selectedItemId,
     );
     if (targetItem) {
-      setItems((prev:ItemType[]) => [...prev, targetItem]);
+      setItems((prev: ItemType[]) => [...prev, targetItem]);
       setShowSuggest(false);
       setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
       setUserInput('');
@@ -128,7 +131,9 @@ export const StoreSelectedItems = ({
   };
 
   const handleRemoveItem = (item: ItemType) => {
-    setItems((prev: ItemType[]) => prev.filter((im) => im.label !== item.label));
+    setItems((prev: ItemType[]) =>
+      prev.filter((im) => im.label !== item.label),
+    );
     setError('');
 
     if (item.id && !suggestions.find((sug) => sug.id === item.id)) {
@@ -140,9 +145,7 @@ export const StoreSelectedItems = ({
 
   const handleAddBtnClick = () => {
     if (maxItemLength && items.length === maxItemLength) {
-      setError(
-        `Unable to add a new item as it reached ${maxItemLength} items.`,
-      );
+      setError(errorMessage);
       setUserInput('');
       setShowSuggest(false);
       return;
@@ -217,12 +220,9 @@ export const StoreSelectedItems = ({
         )}
         <Button label={btnLabel} onClick={handleAddBtnClick} />
       </Field>
-      {error && <ErrorMsg error={error} />}
+      {error && showErrorMessage && <ErrorMsg error={error} />}
       {items && !!items.length && (
-        <ItemsInStore
-          items={items}
-          handleRemoveItem={handleRemoveItem}
-        />
+        <ItemsInStore items={items} handleRemoveItem={handleRemoveItem} />
       )}
     </div>
   );
