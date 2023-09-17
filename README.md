@@ -109,8 +109,10 @@ const initialItems = [
   },
 ];
 
+const maxItemLength = 3
+
 const myErrorMessages: ErrorMessagesType = {
-  maximumReached: 'Unable to add a new item as it reached 3 items.',
+  maximumReached: `Unable to add a new item as it reached ${maxItemLength} items.`,
   alreadyAdded: 'This item is already added.',
   unavailableCharacters: 'Sorry... Only letters, numbers are available.',
 };
@@ -131,7 +133,7 @@ function App() {
           originSuggestions={originSuggestions}
           btnLabel={'Add'}
           className={'wonderful-class'}
-          maxItemLength={5}
+          maxItemLength={maxItemLength}
           placeholder="Input something to add"
           errorMessages={myErrorMessages}
           showErrorMessage={true}
@@ -160,7 +162,9 @@ export default App;
 - GitHub: [@yocosaka](https://github.com/yocosaka)
 - LinkedIn: [Yoko Saka](https://www.linkedin.com/in/yokosaka)
 
-## Contributing
+## Contributions
+
+### Code Contributions
 
 Contributions, issues, and feature requests are welcome!
 Feel free to check the [issues page](../../issues).
@@ -170,6 +174,11 @@ Feel free to check the [issues page](../../issues).
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/react-toastify/contribute)]
 
 ## Show your support
 
