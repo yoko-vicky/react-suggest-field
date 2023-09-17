@@ -5,7 +5,8 @@ import {
   SimpleFilterPropsType,
 } from '../components/SimpleFilter';
 import { originSuggestions } from '../data/examples';
-import { CompContainer } from '../components/base/CompContainer';
+import { CompContainer } from '../components/CompContainer';
+import { ItemType } from '../types';
 
 export default {
   title: 'SimpleFilter',
@@ -23,4 +24,6 @@ Default.args = {
   originSuggestions: originSuggestions,
   placeholder: 'Input something to filter',
   btnLabel: 'Go!',
+  onClick: (selectedItem: ItemType) =>
+    alert(`${selectedItem.label} is inputted!`),
 };

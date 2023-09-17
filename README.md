@@ -62,11 +62,18 @@ $ yarn add react-suggest-field
 | showErrorMessage  | optional | boolean      | true |
 | errorMessages     | optional | ErrorMessagesType        | maximumReached: 'Unable to add a new item as it reached 3 items.', alreadyAdded: 'This item is already added.', unavailableCharacters: 'Sorry... Only letters, numbers are available.' |
 
+### Props in SimpleFilter
+
+| Props | Optional | Types    | Default Value |
+| ----------------- | -------- | -------------------------------- | ------------- |
+| children | required | React.Node | -|
+| title | optional | string | - |
+
 ## The gist
 
 ```jsx
 import React from 'react';
-import { SimpleFilter, StoreSelectedItems } from 'react-suggest-field';
+import { SimpleFilter, StoreSelectedItems, ItemType, CompContainer, ErrorMessagesType } from 'react-suggest-field';
 import 'react-suggest-field/dist/bundle.css';
 
 function App() {
@@ -96,33 +103,51 @@ function App() {
     label: 'White',
   },
 ];
-const initialItemsInStore = [
+
+const initialItems = [
   {
     id: 7,
     label: 'Rainbow',
   },
-] as ItemType[];
+];
+
+const myErrorMessages: ErrorMessagesType = {
+  maximumReached: 'Unable to add a new item as it reached 3 items.',
+  alreadyAdded: 'This item is already added.',
+  unavailableCharacters: 'Sorry... Only letters, numbers are available.',
+};
+
+const [items, setItems] = useState<Itemtype[]>(initialItems)
+const [error, setError] = useState<string>('')
 
   return (
-    <div style={{
-      width: '90%',
-      maxWidth: '60rem',
-      margin: '3rem auto',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '4rem'
-    }}>
-      <StoreSelectedItems
-        initialItemsInStore={initialItemsInStore}
-        originSuggestions={originSuggestions}
-        maxItemLength={5}
-        placeholder="Input something to add"
-      />
-      <SimpleFilter
-        originSuggestions={originSuggestions}
-        placeholder="Input something to filter"
-      />
-    </div>
+    <>
+      <CompContainer title={'Store Selected Items'}>
+        <StoreSelectedItems
+          items={items}
+          setItems={setItems}
+          error={error}
+          setError={setError}
+          originSuggestions={originSuggestions}
+          btnLabel={'Add'}
+          className={'wonderful-class'}
+          maxItemLength={5}
+          placeholder="Input something to add"
+          errorMessages={myErrorMessages}
+          showErrorMessage={true}
+        />
+      </CompContainer>
+      <CompContainer title={'Simple Filter'}>
+        <SimpleFilter
+          originSuggestions={originSuggestions}
+          placeholder="Input something to filter"
+          onClick={(selectedItem) => alert(selectedItem)}
+          btnLabel={'Search!'}
+          className={'wonderful-class'}
+          placeholder={'Input something here!'}
+        />
+      </CompContainer>
+    </>
   );
 }
 ```

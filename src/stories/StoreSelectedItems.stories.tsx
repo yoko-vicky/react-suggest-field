@@ -5,7 +5,7 @@ import {
   StoreSelectedItemsPropsType,
 } from '../components/StoreSelectedItems';
 import { initialItemsInStore, originSuggestions } from '../data/examples';
-import { CompContainer } from '../components/base/CompContainer';
+import { CompContainer } from '../components/CompContainer';
 import { ItemType } from '../types';
 
 export default {
