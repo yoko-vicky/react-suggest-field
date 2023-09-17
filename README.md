@@ -141,7 +141,7 @@ function App() {
         <SimpleFilter
           originSuggestions={originSuggestions}
           placeholder="Input something to filter"
-          onClick={(selectedItem) => alert(selectedItem)}
+          onClick={(selectedItem) => alert(`${selectedItem.label} is inputted!`)}
           btnLabel={'Search!'}
           className={'wonderful-class'}
         />

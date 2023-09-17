@@ -40,7 +40,7 @@ const useCursorSelect = ({
 
     if (e.key === 'Enter') {
       inputRef.current?.blur();
-      console.log('Clicked Enter', onFocusItemIndex);
+      // console.log('Clicked Enter', onFocusItemIndex);
       setClickedEnter(true);
     }
   };
