@@ -127,24 +127,25 @@ export const StoreSelectedItems = ({
 
   const handleSuggestItemClick = (selectedItemId: IdType) => {
     if (maxItemLength && items.length === maxItemLength) {
-      error &&
-        setError &&
-        errorMessages?.maximumReached &&
+      if (error && setError && errorMessages?.maximumReached) {
         setError(errorMessages.maximumReached);
+      }
       setShowSuggest(false);
       setUserInput('');
       return;
     }
 
     const targetItem = filteredSuggestions.find(
-      (sug) => sug.id?.toString() === selectedItemId,
+      (sug) => sug.id === selectedItemId,
     );
+
     if (targetItem) {
       setItems((prev: ItemType[]) => [...prev, targetItem]);
-      setShowSuggest(false);
       setSuggestions((prev) => prev.filter((sug) => sug.id !== targetItem.id));
-      setUserInput('');
     }
+
+    setShowSuggest(false);
+    setUserInput('');
   };
 
   const handleRemoveItem = (item: ItemType) => {
