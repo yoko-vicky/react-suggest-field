@@ -1,14 +1,12 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '../../components/base/Button';
-import { ErrorMsg } from '../../components/base/ErrorMsg';
 import { Field } from '../../components/base/Field';
 import { InputField } from '../../components/base/InputField';
 import { Suggestions } from '../../components/base/Suggestions';
 import useCloseOutsideClick from '../../hooks/useCloseOutsideClick';
 import { IdType, ItemType } from '../../types';
 import { formatLabelToStore, formatStrToFilter } from '../../utils/index';
-import { formatStr } from '../../utils/index';
 import useCursorSelect from '../../hooks/useCursorSelect';
 
 export interface SimpleFilterPropsType {
@@ -27,7 +25,6 @@ export const SimpleFilter = ({
   onClick,
 }: SimpleFilterPropsType) => {
   const [userInput, setUserInput] = useState<string>('');
-  const [error, setError] = useState<string>('');
   const [showSuggest, setShowSuggest] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
   const [suggestions, setSuggestions] = useState<ItemType[]>([]);
@@ -64,7 +61,6 @@ export const SimpleFilter = ({
   });
 
   const handleUserInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setError('');
     setUserInput(e.target.value);
   };
 
@@ -99,7 +95,6 @@ export const SimpleFilter = ({
   };
 
   const handleOnFocusInput = () => {
-    setError('');
     setShowSuggest((prev) => !prev);
   };
 
@@ -133,7 +128,6 @@ export const SimpleFilter = ({
         )}
         <Button label={btnLabel} onClick={handleSearchBtnClick} />
       </Field>
-      {error && <ErrorMsg error={error} />}
     </div>
   );
 };

@@ -77,10 +77,9 @@ export const StoreSelectedItems = ({
 
   const handleSuggestItemClickByFocus = (targetItemIndex: number) => {
     if (maxItemLength && items.length === maxItemLength) {
-      error &&
-        setError &&
-        errorMessages?.maximumReached &&
+      if (setError && errorMessages?.maximumReached) {
         setError(errorMessages?.maximumReached);
+      }
       setShowSuggest(false);
       setUserInput('');
       return;
@@ -103,7 +102,7 @@ export const StoreSelectedItems = ({
   });
 
   const handleUserInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    error && setError && setError('');
+    setError && setError('');
     const newValue = e.target.value;
     const regex = inputRegexStr
       ? new RegExp(inputRegexStr)
@@ -113,12 +112,7 @@ export const StoreSelectedItems = ({
       .split('')
       .every((letter) => !!letter.match(regex));
 
-    if (
-      !isValidString &&
-      error &&
-      setError &&
-      errorMessages?.unavailableCharacters
-    ) {
+    if (!isValidString && setError && errorMessages?.unavailableCharacters) {
       setError(errorMessages?.unavailableCharacters);
       return;
     }
@@ -127,7 +121,7 @@ export const StoreSelectedItems = ({
 
   const handleSuggestItemClick = (selectedItemId: IdType) => {
     if (maxItemLength && items.length === maxItemLength) {
-      if (error && setError && errorMessages?.maximumReached) {
+      if (setError && errorMessages?.maximumReached) {
         setError(errorMessages.maximumReached);
       }
       setShowSuggest(false);
@@ -152,7 +146,7 @@ export const StoreSelectedItems = ({
     setItems((prev: ItemType[]) =>
       prev.filter((im) => im.label !== item.label),
     );
-    error && setError && setError('');
+    setError && setError('');
 
     if (item.id && !suggestions.find((sug) => sug.id === item.id)) {
       setSuggestions((prev) => [...prev, item]);
@@ -163,8 +157,7 @@ export const StoreSelectedItems = ({
 
   const handleAddBtnClick = () => {
     if (maxItemLength && items.length === maxItemLength) {
-      error &&
-        setError &&
+      setError &&
         errorMessages?.maximumReached &&
         setError(errorMessages.maximumReached);
       setUserInput('');
@@ -182,8 +175,7 @@ export const StoreSelectedItems = ({
     );
 
     if (itemInStore) {
-      error &&
-        setError &&
+      setError &&
         errorMessages?.alreadyAdded &&
         setError(errorMessages.alreadyAdded);
       setUserInput('');
@@ -210,7 +202,7 @@ export const StoreSelectedItems = ({
   };
 
   const handleOnFocusInput = () => {
-    error && setError && setError('');
+    setError && setError('');
     setShowSuggest(true);
   };
 
