@@ -66,12 +66,10 @@ export const SimpleFilter = ({
 
   const handleSuggestItemClick = (itemId: IdType) => {
     // console.log({ item });
-    // TODO: update method with itemId
     const item = filteredSuggestions.find((sug) => `${sug.id}` === `${itemId}`);
     if (item) {
       setSelectedItem(item);
       setShowSuggest(false);
-      //  console.log('Do Something', item.label);
       setUserInput(item.label);
       setSuggestions(originSuggestions.filter((sug) => sug.id !== item.id));
     }
@@ -84,18 +82,24 @@ export const SimpleFilter = ({
       return;
     }
 
+    const existingItem = suggestions.find(
+      (sug) => sug.label === formattedUserInput,
+    );
     const userInputItem = {
       id: null,
       label: formattedUserInput,
     };
 
-    const item = selectedItem ? selectedItem : userInputItem;
+    const item = existingItem || userInputItem;
     // console.log({ item });
     onClick(item);
   };
 
   const handleOnFocusInput = () => {
-    setShowSuggest((prev) => !prev);
+    if (selectedItem?.label && !userInput) {
+      setUserInput(selectedItem.label);
+    }
+    setShowSuggest(true);
   };
 
   useEffect(() => {
@@ -104,6 +108,8 @@ export const SimpleFilter = ({
     setSuggestions(originSuggestions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // console.log({ userInput, selectedItem });
 
   return (
     <div
