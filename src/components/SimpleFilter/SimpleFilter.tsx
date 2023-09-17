@@ -7,7 +7,7 @@ import { InputField } from '../../components/base/InputField';
 import { Suggestions } from '../../components/base/Suggestions';
 import useCloseOutsideClick from '../../hooks/useCloseOutsideClick';
 import { IdType, ItemType } from '../../types';
-import { formatStrToFilter } from '../../utils/index';
+import { formatLabelToStore, formatStrToFilter } from '../../utils/index';
 import { formatStr } from '../../utils/index';
 import useCursorSelect from '../../hooks/useCursorSelect';
 
@@ -16,6 +16,7 @@ export interface SimpleFilterPropsType {
   btnLabel?: string;
   className?: string;
   placeholder?: string;
+  onClick: (selectedItem: ItemType) => void;
 }
 
 export const SimpleFilter = ({
@@ -23,6 +24,7 @@ export const SimpleFilter = ({
   btnLabel = 'Search',
   className,
   placeholder,
+  onClick,
 }: SimpleFilterPropsType) => {
   const [userInput, setUserInput] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -80,19 +82,20 @@ export const SimpleFilter = ({
   };
 
   const handleSearchBtnClick = () => {
-    const formattedUserInput = formatStr(userInput);
+    const formattedUserInput = formatLabelToStore(userInput);
 
     if (!formattedUserInput.length) {
       return;
     }
 
-    if (selectedItem) {
-      // DO Search here
-      console.log('Do Search!', formattedUserInput);
-      return;
-    }
+    const userInputItem = {
+      id: null,
+      label: formattedUserInput,
+    };
 
-    // setUserInput('');
+    const item = selectedItem ? selectedItem : userInputItem;
+    // console.log({ item });
+    onClick(item);
   };
 
   const handleOnFocusInput = () => {
@@ -131,9 +134,6 @@ export const SimpleFilter = ({
         <Button label={btnLabel} onClick={handleSearchBtnClick} />
       </Field>
       {error && <ErrorMsg error={error} />}
-      <div className={'simpleFilter__selectedItem'}>
-        SelectedItem: {selectedItem?.label || 'No item selected'}
-      </div>
     </div>
   );
 };
