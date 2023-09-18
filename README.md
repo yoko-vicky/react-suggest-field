@@ -13,7 +13,6 @@ You can try it out on this [live storybook demo](https://yocosaka-react-suggest-
 - TypeScript
 - React
 - SCSS
-- Rollup
 
 ## Live Demo
 
@@ -69,7 +68,7 @@ $ yarn add react-suggest-field
 | children | required | React.Node | -|
 | title | optional | string | - |
 
-## The gist
+## Example
 
 ```jsx
 import React from 'react';
