@@ -1,6 +1,7 @@
 # React Suggest Field
 
-![image](./image.gif)
+![StoreSelectedItems](./storeSelectedItems.gif)
+![simpleFilter](./simpleFilter.gif)
 
 ## About the Project
 
