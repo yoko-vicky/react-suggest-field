@@ -176,9 +176,8 @@ Feel free to check the [issues page](../../issues).
 5. Open a Pull Request
 
 
-### Financial Contributors
+<!-- ### Financial Contributors -->
 
-Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/react-toastify/contribute)]
 
 ## Show your support
 
