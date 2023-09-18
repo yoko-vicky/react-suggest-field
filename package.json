@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git@github.com:yocosaka/react-suggest-field.git"
   },
+  "bugs": {
+    "url": "https://github.com/yocosaka/react-suggest-field/issues"
+  },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
