@@ -5,8 +5,8 @@
 
 ## About the Project
 
-This is a npm package to help you develop an auto-complete suggest field.
-You can try it out on this [live storybook demo](https://yocosaka-react-suggest-field.netlify.app/)!
+React Suggest Field is an NPM package to help you quickly develop an auto-complete suggest field.
+You can try it on this [live storybook demo](https://yocosaka-react-suggest-field.netlify.app/)!
 
 ## Built With
 
@@ -31,8 +31,8 @@ $ yarn add react-suggest-field
 | Type  | Detail           |
 | ----------------- | ---------------------------------------------------------------------------- |
 | ItemType          | { id: IdType, label: string }|
-| IdType| string / number / null / undefined       |
-| ErrorMessagesType | { maximumReached:string, alreadyAdded:string, unavailableCharacters:string } |
+| IdType| string/number/null/undefined       |
+| ErrorMessagesType | { maximumReached: string, alreadyAdded: string, unavailableCharacters: string } |
 
 ### Props in SimpleFilter
 
@@ -59,7 +59,7 @@ $ yarn add react-suggest-field
 | error | required | state: string| -  |
 | setError          | required | React.Dispatch<React.SetStateAction<string>>     | -  |
 | showErrorMessage  | optional | boolean      | true |
-| errorMessages     | optional | ErrorMessagesType        | maximumReached: 'Unable to add a new item as it reached 3 items.', alreadyAdded: 'This item is already added.', unavailableCharacters: 'Sorry... Only letters, numbers are available.' |
+| errorMessages     | optional | ErrorMessagesType        | maximumReached: 'Unable to add a new item as it reached 3 items.', alreadyAdded: 'This item is already added.', unavailableCharacters: 'Sorry... Only letters, and numbers are available.' |
 
 ### Props in SimpleFilter
 
